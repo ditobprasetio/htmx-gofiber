@@ -1,0 +1,5 @@
+node_modules
+bin
+tmp
+.air.toml
+text.md
