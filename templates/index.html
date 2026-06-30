@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script
+            src="https://unpkg.com/htmx.org@1.9.11"
+            integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0"
+            crossorigin="anonymous"
+        ></script>
+        <link rel="stylesheet" href="../css/tailwind.css" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div>
+            <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/027/127/591/small_2x/pokemon-logo-pokemon-icon-transparent-free-png.png"
+                alt="pokemon-logo"
+                class="max-w-[200px] mx-auto"
+            />
+        </div>
+
+        <div class="container mx-auto p-4 max-w-screen-lg flex">
+            <div class="w-2/3">
+                <form
+                    hx-get="/search"
+                    hx-target="#pokemon-section"
+                    class="w-full"
+                >
+                    <input
+                        type="text"
+                        name="q"
+                        placeholder="Your Pokemon champ's name goes here!"
+                        class="w-3/4 py-2 px-6 rounded-full bg-slate-50"
+                    />
+                    <input
+                        type="submit"
+                        value="Search"
+                        class="py-2 px-6 bg-blue-700 text-white rounded-full"
+                    />
+                </form>
+
+                <div class="mt-12">
+                    <h2 class="text-xl font-semibold">Suggestions:</h2>
+                    {{range .Results}}
+                    <button
+                        class="py-2 px-6 m-2 outline-dashed outline-2 outline-blue-800 rounded-full bg-yellow-400"
+                        hx-get="/pokemon/{{.Name}}"
+                        hx-target="#pokemon-section"
+                    >
+                        {{.Name}}
+                    </button>
+                    {{end}}
+
+                    <div>
+                        {{if ne .PrevOffset -1}}
+                        <button
+                            hx-get="/pokemon-list/{{.PrevOffset}}"
+                            hx-target="body"
+                        >
+                            Back
+                        </button>
+                        {{end}} {{if ne .NextOffset -1}}
+                        <button
+                            hx-get="/pokemon-list/{{.NextOffset}}"
+                            hx-target="body"
+                        >
+                            Next
+                        </button>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+
+            <div
+                id="pokemon-section"
+                class="w-1/3 min-h-96 p-4 text-center flex justify-center items-center"
+            >
+                <p class="font-medium text-lg">
+                    Dive in and scout out your beloved Pokemon!
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
